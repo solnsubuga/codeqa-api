@@ -9,7 +9,7 @@ from .base import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'codeqadb',
+        'NAME': 'codeqa',
         'HOST': 'localhost',
         'USER': 'postgres',
         'PASSWORD': '',
