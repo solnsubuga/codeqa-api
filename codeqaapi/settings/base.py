@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third party
     'django_extensions',
+    'rest_framework',
 
-
-    # my apps
+    # local apps
     'authentication.apps.AuthenticationConfig',
     'questions.apps.QuestionsConfig',
 ]
@@ -109,6 +110,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Rest Framework
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'codeqaapi.exceptions.core_exception_handler',
+    'NON_FIELD_ERRORS_KEY': 'detail',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'authentication.backends.JWTAuthentication',
+    ),
+}
 
 
 # Internationalization
