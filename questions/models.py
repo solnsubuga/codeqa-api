@@ -57,8 +57,14 @@ class Vote(models.Model):
 
 class Question(Postable):
     title = models.CharField(max_length=256)
-    slug = models.SlugField(max_length=256, unique_for_date='created')
+    slug = models.SlugField(max_length=256)
     viewed = models.IntegerField(default=0)
+
+    @property
+    def votes(self):
+        vote_count = 0
+        for vote in self.questionvote_set.all():
+            vote_count += vote.value
 
     def __str__(self):
         return self.title
@@ -68,19 +74,15 @@ class QuestionVote(Vote):
     """Model for question votes"""
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
-    @property
-    def votes(self):
-        return reduce(lambda value, val: value+val,
-                      [vote.value for vote in self.answervote_set.all()])
-
 
 class Answer(Postable):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     @property
     def votes(self):
-        return reduce(lambda value, val: value+val,
-                      [vote.value for vote in self.answervote_set.all()])
+        vote_count = 0
+        for vote in self.answervote_set.all():
+            vote_count += vote.value
 
 
 class AnswerVote(Vote):
