@@ -10,7 +10,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
-    author = AuthorSerializer()
+    author = AuthorSerializer(read_only=True)
 
     class Meta:
         model = Answer
@@ -25,16 +25,3 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = ['id', 'title', 'body', 'slug', 'answers',
                   'created', 'updated', 'viewed', 'votes', 'author']
-        extra_kwargs = {
-            'slug': {'allow_null': True, 'allow_blank': True, 'required': False},
-        }
-
-    def create(self, validated_data):
-        return Question.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        for key, val in validated_data.items():
-            if hasattr(instance, key):
-                setattr(instance, key, val)
-        instance.save()
-        return instance

@@ -1,6 +1,7 @@
 from functools import reduce
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 # TODO: add tag and comment model
 
@@ -61,10 +62,32 @@ class Question(Postable):
     viewed = models.IntegerField(default=0)
 
     @property
+    def url(self):
+        return reverse('api:question_detail', args=[self.pk])
+
+    @property
     def votes(self):
         vote_count = 0
         for vote in self.questionvote_set.all():
             vote_count += vote.value
+        return vote_count
+
+    def vote(self, voter, value):
+        """Up votes or down votes a question
+        """
+        question_vote = self.questionvote_set.filter(voter=voter).first()
+        if not question_vote:
+            question_vote = QuestionVote(
+                voter=voter, value=value, question=self)
+        else:
+            # TODO: edit votes
+            pass
+        question_vote.save()
+
+    def mark_viewed(self):
+        """Marks a question has viewed """
+        self.viewed += 1
+        self.save()
 
     def __str__(self):
         return self.title
@@ -76,13 +99,15 @@ class QuestionVote(Vote):
 
 
 class Answer(Postable):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, related_name='answers')
 
     @property
     def votes(self):
         vote_count = 0
         for vote in self.answervote_set.all():
             vote_count += vote.value
+        return vote_count
 
 
 class AnswerVote(Vote):

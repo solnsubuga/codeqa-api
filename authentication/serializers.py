@@ -63,7 +63,7 @@ class SignInSerializer(serializers.Serializer):
             user.last_login = timezone.now()
             user.save()
             return {
-                'token': identity_model.encode(payload, 36000),
+                'token': identity_model.encode(payload, 360000),
                 'username': username
             }
         raise serializers.ValidationError('Wrong username or password')
