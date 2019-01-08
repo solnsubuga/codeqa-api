@@ -67,6 +67,8 @@ class Question(Postable):
 
     @property
     def votes(self):
+        # TODO: maybe you would want to use signals to
+        # calculate total votes and store a calculated value
         vote_count = 0
         for vote in self.questionvote_set.all():
             vote_count += vote.value
@@ -104,6 +106,8 @@ class Answer(Postable):
 
     @property
     def votes(self):
+        # TODO: maybe you would want to use signals to
+        # calculate total votes and store a calculated value
         vote_count = 0
         for vote in self.answervote_set.all():
             vote_count += vote.value

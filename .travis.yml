@@ -1,0 +1,25 @@
+language: python
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+
+python:
+  - "3.6"
+
+services:
+  - postgresql
+
+env:
+  - DJANGO_SETTINGS_MODULE: "codeqaapi.settings.dev"
+
+# install requirements
+install:
+  - pip install -r requirements.txt
+
+script:
+  - coverage run --source='.' ./manage.py test
+  - coverage report
+
+after_script:
+  - coveralls
