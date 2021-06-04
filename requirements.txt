@@ -9,7 +9,7 @@ coverage==4.5.2
 coveralls==1.5.1
 cryptography==2.4.2
 dj-database-url==0.5.0
-Django==2.2.13
+Django==2.2.21
 django-autofixture==0.12.1
 django-debug-toolbar==1.11
 django-extensions==2.1.4
